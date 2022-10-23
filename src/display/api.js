@@ -257,7 +257,7 @@ function getDocument(src) {
     if (typeof src !== "object") {
       throw new Error(
         "Invalid parameter in getDocument, " +
-          "need either string, URL, TypedArray, or parameter object."
+        "need either string, URL, TypedArray, or parameter object."
       );
     }
     if (!src.url && !src.data && !src.range) {
@@ -290,7 +290,7 @@ function getDocument(src) {
         }
         throw new Error(
           "Invalid PDF url data: " +
-            "either string or URL-object is expected in the url property."
+          "either string or URL-object is expected in the url property."
         );
       case "range":
         rangeTransport = value;
@@ -323,7 +323,7 @@ function getDocument(src) {
         } else {
           throw new Error(
             "Invalid PDF binary data: either TypedArray, " +
-              "string, or array-like object is expected in the data property."
+            "string, or array-like object is expected in the data property."
           );
         }
         continue;
@@ -707,7 +707,7 @@ class PDFDataRangeTransport {
     unreachable("Abstract method PDFDataRangeTransport.requestDataRange");
   }
 
-  abort() {}
+  abort() { }
 }
 
 /**
@@ -2360,7 +2360,7 @@ class WorkerTransport {
 
         const annotationStorage =
           renderingIntent & RenderingIntentFlag.PRINT &&
-          printAnnotationStorage instanceof PrintAnnotationStorage
+            printAnnotationStorage instanceof PrintAnnotationStorage
             ? printAnnotationStorage
             : this.annotationStorage;
 
@@ -2815,7 +2815,7 @@ class WorkerTransport {
     if (this.annotationStorage.size <= 0) {
       warn(
         "saveDocument called while `annotationStorage` is empty, " +
-          "please use the getData-method instead."
+        "please use the getData-method instead."
       );
     }
     return this.messageHandler
@@ -3226,8 +3226,8 @@ class InternalRenderTask {
       if (InternalRenderTask.#canvasInUse.has(this._canvas)) {
         throw new Error(
           "Cannot use the same canvas during multiple render() operations. " +
-            "Use different canvas or ensure previous operations were " +
-            "cancelled or completed."
+          "Use different canvas or ensure previous operations were " +
+          "cancelled or completed."
         );
       }
       InternalRenderTask.#canvasInUse.add(this._canvas);
@@ -3270,10 +3270,10 @@ class InternalRenderTask {
     }
     this.callback(
       error ||
-        new RenderingCancelledException(
-          `Rendering cancelled, page ${this._pageIndex + 1}`,
-          "canvas"
-        )
+      new RenderingCancelledException(
+        `Rendering cancelled, page ${this._pageIndex + 1}`,
+        "canvas"
+      )
     );
   }
 

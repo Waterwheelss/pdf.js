@@ -178,6 +178,7 @@ class AnnotationStorage {
         clone.set(key, serialized);
       }
     }
+
     return clone;
   }
 

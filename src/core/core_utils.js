@@ -18,6 +18,7 @@ import {
   assert,
   BaseException,
   FontType,
+  HeptaAnnotationPrefix,
   objectSize,
   StreamType,
   stringToPDFString,
@@ -559,7 +560,10 @@ function getNewAnnotationsMap(annotationStorage) {
   // The concept of page in a XFA is very different, so
   // editing is just not implemented.
   for (const [key, value] of annotationStorage) {
-    if (!key.startsWith(AnnotationEditorPrefix)) {
+    if (
+      !key.startsWith(AnnotationEditorPrefix) &&
+      !key.startsWith(HeptaAnnotationPrefix)
+    ) {
       continue;
     }
     let annotations = newAnnotationsByPage.get(value.pageIndex);

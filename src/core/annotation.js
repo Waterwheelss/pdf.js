@@ -281,6 +281,16 @@ class AnnotationFactory {
           promises.push(
             InkAnnotation.createNewAnnotation(xref, annotation, dependencies)
           );
+          break;
+        case AnnotationEditorType.HIGHLIGHT:
+          promises.push(
+            HighlightAnnotation.createNewAnnotation(
+              xref,
+              annotation,
+              dependencies
+            )
+          );
+          break;
       }
     }
 
@@ -3947,6 +3957,79 @@ class HighlightAnnotation extends MarkupAnnotation {
     } else {
       this.data.hasPopup = false;
     }
+  }
+
+  static createNewDict(annotation, xref, { apRef, ap }) {
+    const { quadPoints, rect } = annotation;
+    const highlight = new Dict(xref);
+
+    const quadPointBuffer = quadPoints.flatMap(quadPoint =>
+      quadPoint.reduce((prev, current) => {
+        const array = [...prev];
+        array.push(current.x, current.y);
+        return array;
+      }, [])
+    );
+
+    highlight.set("Type", Name.get("Annot"));
+    highlight.set("Subtype", Name.get("Highlight"));
+    highlight.set("C", [1, 0.8313725490196079, 0]);
+    highlight.set("CreationDate", `D:${getModificationDate()}`);
+    highlight.set("Rect", rect);
+    highlight.set("QuadPoints", quadPointBuffer);
+
+    const n = new Dict(xref);
+    highlight.set("AP", n);
+
+    if (apRef) {
+      n.set("N", apRef);
+    } else {
+      n.set("N", ap);
+    }
+
+    return highlight;
+  }
+
+  static async createNewAppearanceStream(annotation, xref, params) {
+    const { quadPoints, rect } = annotation;
+
+    const quadPointBufferWithoutFlat = quadPoints.map(quadPoint =>
+      quadPoint.reduce((prev, current) => {
+        const array = [...prev];
+        array.push(current.x, current.y);
+        return array;
+      }, [])
+    );
+
+    const quadPointBuffer = quadPointBufferWithoutFlat.flat();
+
+    const containerRect = rect;
+
+    const appearanceBuffer = [`/G0 gs`, `1 0.8313725490196079 0 rg`];
+
+    const buffer = [];
+    quadPointBufferWithoutFlat.forEach(quadPoint => {
+      buffer.push(
+        `${quadPoint[0]} ${quadPoint[1]} m ${quadPoint[2]} ${quadPoint[3]} l ${quadPoint[6]} ${quadPoint[7]} l ${quadPoint[4]} ${quadPoint[5]} h f`
+      );
+    });
+
+    appearanceBuffer.push(buffer.join("\n"));
+
+    const appearance = appearanceBuffer.join("\n");
+
+    const appearanceStreamDict = new Dict(xref);
+    appearanceStreamDict.set("FormType", 1);
+    appearanceStreamDict.set("QuadPoints", quadPointBuffer);
+    appearanceStreamDict.set("Subtype", Name.get("Form"));
+    appearanceStreamDict.set("Type", Name.get("XObject"));
+    appearanceStreamDict.set("BBox", containerRect);
+    appearanceStreamDict.set("Length", appearance.length);
+
+    const ap = new StringStream(appearance);
+    ap.dict = appearanceStreamDict;
+
+    return ap;
   }
 }
 

@@ -61,11 +61,13 @@ const AnnotationMode = {
 };
 
 const AnnotationEditorPrefix = "pdfjs_internal_editor_";
+const HeptaAnnotationPrefix = "hepta_";
 
 const AnnotationEditorType = {
   DISABLE: -1,
   NONE: 0,
   FREETEXT: 3,
+  HIGHLIGHT: 9,
   INK: 15,
 };
 
@@ -1171,6 +1173,7 @@ export {
   FormatError,
   getModificationDate,
   getVerbosityLevel,
+  HeptaAnnotationPrefix,
   IDENTITY_MATRIX,
   ImageKind,
   info,

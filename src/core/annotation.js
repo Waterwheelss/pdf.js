@@ -4026,6 +4026,19 @@ class HighlightAnnotation extends MarkupAnnotation {
     appearanceStreamDict.set("BBox", containerRect);
     appearanceStreamDict.set("Length", appearance.length);
 
+    const g0Dict = new Dict(xref);
+    g0Dict.set("BM", Name.get("Multiply"));
+    g0Dict.set("CA", 1);
+    g0Dict.set("ca", 1);
+
+    const g0Ref = new Dict(xref);
+    g0Ref.set("G0", g0Dict);
+
+    const extGState = new Dict(xref);
+    extGState.set("ExtGState", g0Ref);
+
+    appearanceStreamDict.set("Resources", extGState);
+
     const ap = new StringStream(appearance);
     ap.dict = appearanceStreamDict;
 

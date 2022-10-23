@@ -4010,7 +4010,7 @@ class HighlightAnnotation extends MarkupAnnotation {
     const buffer = [];
     quadPointBufferWithoutFlat.forEach(quadPoint => {
       buffer.push(
-        `${quadPoint[0]} ${quadPoint[1]} m ${quadPoint[2]} ${quadPoint[3]} l ${quadPoint[6]} ${quadPoint[7]} l ${quadPoint[4]} ${quadPoint[5]} h f`
+        `${quadPoint[0]} ${quadPoint[1]} m ${quadPoint[2]} ${quadPoint[3]} l ${quadPoint[6]} ${quadPoint[7]} l ${quadPoint[4]} ${quadPoint[5]} l h f`
       );
     });
 
